@@ -25,35 +25,39 @@ install: ## Install all dependencies
 
 validate: ## Validate environment setup
 	@echo "🔍 Validating environment..."
-	python validate_env.py
+	@if [ -f scripts/validate_env.py ]; then python scripts/validate_env.py; else echo "⚠️  validate_env.py not found"; fi
 
 run-all: ## Run all labs in sequence
 	@echo "🚀 Starting complete workshop..."
-	python run_workshop.py --all
+	python workshop/run_workshop.py --all
 
 run-all-auto: ## Run all labs automatically (non-interactive)
 	@echo "🚀 Starting automated workshop..."
-	python run_workshop.py --all --non-interactive
+	python workshop/run_workshop.py --all --non-interactive
 
 lab1: ## Run Lab 1: Agent Prototype
 	@echo "🤖 Running Lab 1: Agent Prototype..."
-	python lab1_implementation.py
+	python workshop/lab1.py
 
 lab2: ## Run Lab 2: Memory & Personalization
 	@echo "🧠 Running Lab 2: Memory & Personalization..."
-	python lab2_implementation.py
+	python workshop/lab2.py
+
+lab3: ## Run Lab 3: Gateway & Identity
+	@echo "🔐 Running Lab 3: Gateway & Identity..."
+	python workshop/lab3.py
 
 lab4: ## Run Lab 4: Production Runtime
 	@echo "🚀 Running Lab 4: Production Runtime..."
-	python lab4_implementation.py
+	python workshop/lab4.py
 
 lab5: ## Run Lab 5: Customer Frontend
 	@echo "🎨 Running Lab 5: Customer Frontend..."
-	python lab5_implementation.py
+	python workshop/lab5.py
 
 lab6: ## Run Lab 6: Complete Cleanup
 	@echo "🧹 Running Lab 6: Cleanup..."
-	python lab6_implementation.py
+	python workshop/lab6.py
 
 frontend: ## Launch the Streamlit frontend
 	@echo "🎨 Launching Streamlit frontend..."
@@ -116,12 +120,12 @@ dev-install: ## Install with development dependencies
 
 lint: ## Run code linting
 	@echo "🔍 Running linters..."
-	pylint lab*_implementation.py run_workshop.py --disable=C0111,R0913,R0914 || true
-	black --check *.py || true
+	pylint workshop/*.py --disable=C0111,R0913,R0914 || true
+	black --check workshop/*.py || true
 
 format: ## Format code with black
 	@echo "✨ Formatting code..."
-	black *.py
+	black workshop/*.py scripts/*.py
 
 # AWS commands
 aws-check: ## Check AWS credentials
